@@ -1,30 +1,7 @@
 #!/usr/bin/python3
-"""This module defines the entry point of the command interpreter.
+"""This module defines the entry point of the command interpreter."""
 
-It defines one class, `HBNBCommand()`, which sub-classes the `cmd.Cmd` class.
-This module defines abstractions that allows us to manipulate a powerful
-storage system (FileStorage / DB). This abstraction will also allow us to
-change the type of storage easily without updating all of our codebase.
 
-It allows us to interactively and non-interactively:
-    - create a data model
-    - manage (create, update, destroy, etc) objects via a console / interpreter
-    - store and persist objects to a file (JSON file)
-
-Typical usage example:
-
-    $ ./console
-    (hbnb)
-
-    (hbnb) help
-    Documented commands (type help <topic>):
-    ========================================
-    EOF  create  help  quit
-
-    (hbnb)
-    (hbnb) quit
-    $
-"""
 import re
 import cmd
 import json
@@ -35,88 +12,60 @@ current_classes = {'BaseModel': BaseModel}
 
 
 class HBNBCommand(cmd.Cmd):
-    """The command interpreter.
-
-    This class represents the command interpreter, and the control center
-    of this project. It defines function handlers for all commands inputted
-    in the console and calls the appropriate storage engine APIs to manipulate
-    application data / models.
-
-    It sub-classes Python's `cmd.Cmd` class which provides a simple framework
-    for writing line-oriented command interpreters.
-    """
+    """Command interpreter for the AirBnB project."""
 
     prompt = "(hbnb) "
 
     def precmd(self, line):
-        """Defines instructions to execute before <line> is interpreted.
-        """
+        """Preprocess the command line."""
+
         if not line:
             return '\n'
-
         pattern = re.compile(r"(\w+)\.(\w+)\((.*)\)")
-        match_list = pattern.findall(line)
-        if not match_list:
-            return super().precmd(line)
-
-        match_tuple = match_list[0]
-        if not match_tuple[2]:
-            if match_tuple[1] == "count":
-                instance_objs = storage.all()
-                print(len([
-                    v for _, v in instance_objs.items()
-                    if type(v).__name__ == match_tuple[0]]))
-                return "\n"
-            return "{} {}".format(match_tuple[1], match_tuple[0])
-        else:
-            args = match_tuple[2].split(", ")
-            if len(args) == 1:
-                return "{} {} {}".format(
-                    match_tuple[1], match_tuple[0],
-                    re.sub("[\"\']", "", match_tuple[2]))
-            else:
-                match_json = re.findall(r"{.*}", match_tuple[2])
-                if (match_json):
-                    return "{} {} {} {}".format(
-                        match_tuple[1], match_tuple[0],
-                        re.sub("[\"\']", "", args[0]),
-                        re.sub("\'", "\"", match_json[0]))
-                return "{} {} {} {} {}".format(
-                    match_tuple[1], match_tuple[0],
-                    re.sub("[\"\']", "", args[0]),
-                    re.sub("[\"\']", "", args[1]), args[2])
-
-    def do_help(self, arg):
-        """To get help on a command, type help <topic>.
-        """
-        return super().do_help(arg)
-
-    def do_EOF(self, line):
-        """Inbuilt EOF command to gracefully catch errors.
-        """
-        print("")
-        return True
+        match = pattern.match(line)
+        if match:
+            class_name = match.group(1)
+            method_name = match.group(2)
+            args = match.group(3)
+            if method_name == "all":
+                return "all {}".format(class_name)
+            if method_name == "show":
+                return "show {} {}".format(class_name, args)
+            if method_name == "destroy":
+                return "destroy {} {}".format(class_name, args)
+            if method_name == "update":
+                return "update {} {}".format(class_name, args)
+            if method_name == "count":
+                return "count {}".format(class_name)
+        return line
 
     def do_quit(self, arg):
         """Quit command to exit the program.
         """
         return True
-
+    
+    def do_EOF(self, arg):
+        """EOF command to exit the program.
+        """
+        return True
+    
     def emptyline(self):
-        """Override default `empty line + return` behaviour.
+        """Handles empty line.
         """
         pass
 
     def do_create(self, arg):
-        """Creates a new instance.
+        """Creates a new instance of BaseModel, saves it to JSON file and prints the id.
         """
-        args = arg.split()
-        if not validate_classname(args):
+        if not arg:
+            print("** class name missing **")
             return
-
-        new_obj = current_classes[args[0]]()
-        new_obj.save()
-        print(new_obj.id)
+        if arg not in current_classes.keys():
+            print("** class doesn't exist **")
+            return
+        new_instance = current_classes[arg]()
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, arg):
         """Prints the string representation of an instance.
