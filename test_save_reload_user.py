@@ -1,6 +1,4 @@
 #!/usr/bin/python3
-"""Test the save and reload methods of the User class."""
-
 from models import storage
 from models.base_model import BaseModel
 from models.user import User

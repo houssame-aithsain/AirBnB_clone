@@ -5,6 +5,7 @@
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -16,6 +17,10 @@ class FileStorage:
     def all(self):
         """Returns the dictionary __objects"""
         return FileStorage.__objects
+
+    def class_dict(self):
+        """Returns the dictionary __objects"""
+        return FileStorage.classes
 
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id"""
@@ -31,17 +36,14 @@ class FileStorage:
             json.dump(new_dict, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects (only if the JSON file
-        exists; otherwise, do nothing)"""
+        """Deserializes the JSON file to __objects"""
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, mode='r', encoding='utf-8') as f:
                 new_dict = json.load(f)
             for key, value in new_dict.items():
-                class_name = value["__class__"]
-                # obj = eval(class_name + "(**value)")
-                # FileStorage.__objects[key] = obj
-        else:
-            return
+                cls = value["__class__"]
+                obj = FileStorage.classes[cls](**value)
+                FileStorage.__objects[key] = obj
     
     def delete(self, obj=None):
         """Deletes obj from __objects if it’s inside"""
@@ -214,4 +216,4 @@ class FileStorage:
         """Method to retrieve all objects by place_id"""
         return [value for value in self.get_all(cls) if value.place_id == place_id]
 
-    classes = { "BaseModel": BaseModel }
+    classes = { "BaseModel": BaseModel, "User": User}
