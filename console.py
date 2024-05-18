@@ -48,11 +48,11 @@ class HBNBCommand(cmd.Cmd):
                     return "{} {} {} {}".format(
                         match[1], match[0],
                         re.sub("[\"\']", "", args[0]),
-                        re.sub("\'", "\"", json_match[0]))
-                return "{} {} {} {} {}".format(
+                        json_match[0])
+                return "{} {} {} {}".format(
                     match[1], match[0],
                     re.sub("[\"\']", "", args[0]),
-                    re.sub("[\"\']", "", args[1]), args[2])
+                    re.sub("[\"\']", "", args[1]))
 
     def do_help(self, arg):
         """Get help on a command."""
