@@ -38,8 +38,8 @@ class FileStorage:
                 new_dict = json.load(f)
             for key, value in new_dict.items():
                 class_name = value["__class__"]
-                obj = eval(class_name + "(**value)")
-                FileStorage.__objects[key] = obj
+                # obj = eval(class_name + "(**value)")
+                # FileStorage.__objects[key] = obj
         else:
             return
     
