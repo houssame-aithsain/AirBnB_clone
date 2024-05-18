@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Command interpreter for the HBNB project."""
+"""Command interpreter for the HBNB project that can manage the objects"""
 
 import re
 import cmd
