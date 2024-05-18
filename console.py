@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def precmd(self, line):
-        """Modify command line before interpreting it."""
+        """Parse the command line."""
         if not line:
             return '\n'
 
@@ -55,20 +55,20 @@ class HBNBCommand(cmd.Cmd):
                     re.sub("[\"\']", "", args[1]))
 
     def do_help(self, arg):
-        """Get help on a command."""
+        """Print help message."""
         return super().do_help(arg)
 
     def do_EOF(self, line):
-        """Handle EOF to gracefully exit."""
+        """Exit the command interpreter."""
         print("")
         return True
 
     def do_quit(self, arg):
-        """Quit the command interpreter."""
+        """Quit command to exit the program."""
         return True
 
     def emptyline(self):
-        """Override default behavior of executing the last command."""
+        """Do nothing on empty input."""
         pass
 
     def do_create(self, arg):
@@ -96,7 +96,9 @@ class HBNBCommand(cmd.Cmd):
         print(instance)
 
     def do_destroy(self, arg):
-        """Delete an instance based on class name and id."""
+        """Delete an instance based on class name and id
+        (save the change into the JSON file).
+        """
         args = arg.split()
         if not validate_class_name(args, check_id=True):
             return
@@ -112,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_all(self, arg):
-        """Print the string representation of all instances."""
+        """Print all string representations of all instances."""
         args = arg.split()
         all_instances = storage.all()
 
@@ -127,7 +129,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
     def do_update(self, arg):
-        """Update an instance based on class name and id."""
+        """Update an instance based on the class name and id
+        by adding or updating attribute (save the change into the JSON file).
+        """
         args = arg.split(maxsplit=3)
         if not validate_class_name(args, check_id=True):
             return
@@ -174,7 +178,7 @@ def validate_class_name(args, check_id=False):
     return True
 
 def validate_attributes(args):
-    """Validate the attributes."""
+    """Validate the attribute name and value."""
     if len(args) < 3:
         print("** attribute name missing **")
         return False
@@ -199,7 +203,7 @@ def is_integer(value):
         return False
 
 def parse_value(value):
-    """Parse a string value into an integer, float, or string."""
+    """Parse a value to an integer or float if possible or return a string."""
     cleaned_value = re.sub(r'"', '', value)
 
     if is_integer(cleaned_value):
