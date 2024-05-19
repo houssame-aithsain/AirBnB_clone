@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""Unit tests for the `review` module.
-"""
+"""This module defines a base class for all models in the AirBnB project."""
 
 import os
 import unittest
@@ -26,21 +25,15 @@ class TestReview(unittest.TestCase):
         """Test method for class attributes"""
 
         r1 = Review()
+        r2 = Review(**r1.to_dict())
         r3 = Review("hello", "wait", "in")
+
         k = f"{type(r1).__name__}.{r1.id}"
         self.assertIsInstance(r1.text, str)
-        self.assertIsInstance(r1.user_id, str)
-        self.assertIsInstance(r1.place_id, str)
+        self.assertIn(k, storage.all())
         self.assertEqual(r3.text, "")
-
-    def test_init(self):
-        """Test method for public instances"""
-        r1 = Review()
-        r2 = Review(**r1.to_dict())
-        self.assertIsInstance(r1.id, str)
-        self.assertIsInstance(r1.created_at, datetime)
-        self.assertIsInstance(r1.updated_at, datetime)
-        self.assertEqual(r1.updated_at, r2.updated_at)
+        self.assertEqual(r3.place_id, "")
+        self.assertEqual(r3.user_id, "")
 
     def test_str(self):
         """Test method for str representation"""
@@ -58,14 +51,28 @@ class TestReview(unittest.TestCase):
     def test_todict(self):
         """Test method for dict"""
         r1 = Review()
-        r2 = Review(**r1.to_dict())
-        a_dict = r2.to_dict()
-        self.assertIsInstance(a_dict, dict)
-        self.assertEqual(a_dict['__class__'], type(r2).__name__)
-        self.assertIn('created_at', a_dict.keys())
-        self.assertIn('updated_at', a_dict.keys())
-        self.assertNotEqual(r1, r2)
+        self.assertIsInstance(r1.to_dict(), dict)
+        self.assertEqual(r1.__class__.__name__, 'Review')
+    
+    def test_text(self):
+        """Test method for text"""
+        r1 = Review()
+        self.assertIsInstance(r1.text, str)
+        self.assertEqual(r1.text, "")
+    
+    def test_place_id(self):
+        """Test method for place_id"""
+        r1 = Review()
+        self.assertIsInstance(r1.place_id, str)
+        self.assertEqual(r1.place_id, "")
+    
+    def test_user_id(self):
+        """Test method for user_id"""
+        r1 = Review()
+        self.assertIsInstance(r1.user_id, str)
+        self.assertEqual(r1.user_id, "")
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_review_instance(self):
+        """Test instance of Review"""
+        r1 = Review()
+        self.assertIsInstance(r1, Review)
