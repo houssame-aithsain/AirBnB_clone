@@ -53,19 +53,19 @@ class TestReview(unittest.TestCase):
         r1 = Review()
         self.assertIsInstance(r1.to_dict(), dict)
         self.assertEqual(r1.__class__.__name__, 'Review')
-    
+
     def test_text(self):
         """Test method for text"""
         r1 = Review()
         self.assertIsInstance(r1.text, str)
         self.assertEqual(r1.text, "")
-    
+
     def test_place_id(self):
         """Test method for place_id"""
         r1 = Review()
         self.assertIsInstance(r1.place_id, str)
         self.assertEqual(r1.place_id, "")
-    
+
     def test_user_id(self):
         """Test method for user_id"""
         r1 = Review()

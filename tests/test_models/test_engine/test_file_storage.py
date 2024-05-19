@@ -50,33 +50,26 @@ class TestBaseModel(unittest.TestCase):
         """Test method for dict"""
         b1 = BaseModel()
         self.assertIsInstance(b1.to_dict(), dict)
-        self.assertEqual(b1.__class__.__name__,
-                            'BaseModel')
-    
+        self.assertEqual(b1.__class__.__name__, 'BaseModel')
+
     def test_id(self):
         """Test method for id"""
         b1 = BaseModel()
         self.assertIsInstance(b1.id, str)
-    
+
     def test_save(self):
         """Test method for save"""
         b1 = BaseModel()
         old_update = b1.updated_at
         b1.save()
         self.assertNotEqual(b1.updated_at, old_update)
-    
+
     def test_to_dict(self):
         """Test method for to_dict"""
         b1 = BaseModel()
         self.assertIsInstance(b1.to_dict(), dict)
-        self.assertEqual(b1.__class__.__name__,
-                            'BaseModel')
+        self.assertEqual(b1.__class__.__name__, 'BaseModel')
 
-    def test_instance(self):
-        """Test instance of BaseModel"""
-        b1 = BaseModel()
-        self.assertIsInstance(b1, BaseModel)
-    
     def test_instance(self):
         """Test instance of BaseModel"""
         b1 = BaseModel()
@@ -86,12 +79,7 @@ class TestBaseModel(unittest.TestCase):
         """Test instance of BaseModel"""
         b1 = BaseModel()
         self.assertIsInstance(b1, BaseModel)
-    
-    def test_instance(self):
-        """Test instance of BaseModel"""
-        b1 = BaseModel()
-        self.assertIsInstance(b1, BaseModel)
-    
+
     def test_instance(self):
         """Test instance of BaseModel"""
         b1 = BaseModel()
@@ -101,7 +89,17 @@ class TestBaseModel(unittest.TestCase):
         """Test instance of BaseModel"""
         b1 = BaseModel()
         self.assertIsInstance(b1, BaseModel)
-    
+
+    def test_instance(self):
+        """Test instance of BaseModel"""
+        b1 = BaseModel()
+        self.assertIsInstance(b1, BaseModel)
+
+    def test_instance(self):
+        """Test instance of BaseModel"""
+        b1 = BaseModel()
+        self.assertIsInstance(b1, BaseModel)
+
     def test_instance(self):
         """Test instance of BaseModel"""
         b1 = BaseModel()

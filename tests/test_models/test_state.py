@@ -51,22 +51,22 @@ class TestState(unittest.TestCase):
         s1 = State()
         self.assertIsInstance(s1.to_dict(), dict)
         self.assertEqual(s1.__class__.__name__, 'State')
-    
+
     def test_name(self):
         """Test method for name"""
         s1 = State()
         self.assertIsInstance(s1.name, str)
-    
+
     def test_name(self):
         """Test method for name"""
         s1 = State()
         self.assertIsInstance(s1.name, str)
-    
+
     def test_name(self):
         """Test method for name"""
         s1 = State()
         self.assertIsInstance(s1.name, str)
-    
+
     def test_name(self):
         """Test method for name"""
         s1 = State()

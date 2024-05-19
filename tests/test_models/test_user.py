@@ -54,7 +54,7 @@ class TestUser(unittest.TestCase):
         u1 = User()
         self.assertIsInstance(u1.to_dict(), dict)
         self.assertEqual(u1.__class__.__name__, 'User')
-    
+
     def test_email(self):
         """Test method for email"""
         u1 = User()
@@ -64,7 +64,7 @@ class TestUser(unittest.TestCase):
         """Test method for password"""
         u1 = User()
         self.assertIsInstance(u1.password, str)
-    
+
     def test_first_name(self):
         """Test method for first_name"""
         u1 = User()

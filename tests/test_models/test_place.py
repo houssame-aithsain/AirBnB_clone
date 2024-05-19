@@ -42,20 +42,20 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(p3.latitude, 0.0)
         self.assertEqual(p3.longitude, 0.0)
         self.assertEqual(p3.amenity_ids, [])
-    
+
     def test_str(self):
         """Test method for str representation"""
         p1 = Place()
         string = f"[{type(p1).__name__}] ({p1.id}) {p1.__dict__}"
         self.assertEqual(p1.__str__(), string)
-    
+
     def test_save(self):
         """Test method for save"""
         p1 = Place()
         old_update = p1.updated_at
         p1.save()
         self.assertNotEqual(p1.updated_at, old_update)
-    
+
     def test_todict(self):
         """Test method for dict"""
         p1 = Place()
@@ -66,6 +66,7 @@ class TestPlace(unittest.TestCase):
         """Test instance of Place"""
         p1 = Place()
         self.assertIsInstance(p1, Place)
+
 
 if __name__ == '__main__':
     unittest.main()
