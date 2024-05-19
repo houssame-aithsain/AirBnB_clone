@@ -82,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
                     storage.save()
                 else:
                     print("** no instance found **")
-    
+
     def do_all(self, arg):
         """Prints all string representation of all instances"""
         if not arg:
@@ -91,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             print([str(v) for k, v in storage.all().items() if arg in k])
-    
+
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
         if not arg:
@@ -113,7 +113,7 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     setattr(storage.all()[key], arg[2], arg[3])
                     storage.all()[key].save()
-    
+
     def do_count(self, arg):
         """Counts the number of instances of a class"""
         count = 0
@@ -121,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
             if arg in k:
                 count += 1
         print(count)
-    
+
     def default(self, arg):
         """default method"""
         args = arg.split('.')
@@ -140,6 +140,7 @@ class HBNBCommand(cmd.Cmd):
                 self.do_update(args[0] + ' ' + args[1])
         else:
             cmd.Cmd.default(self, arg)
-    
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
