@@ -51,12 +51,12 @@ class TestAmenity(unittest.TestCase):
         string = f"[{type(a1).__name__}] ({a1.id}) {a1.__dict__}"
         self.assertEqual(a1.__str__(), string)
 
-    # def test_save(self):
-    #     """Test method for save"""
-    #     a1 = Amenity()
-    #     old_update = a1.updated_at
-    #     a1.save()
-    #     self.assertNotEqual(a1.updated_at, old_update)
+    def test_save(self):
+        """Test method for save"""
+        a1 = Amenity()
+        old_update = a1.updated_at
+        a1.save()
+        self.assertNotEqual(a1.updated_at, old_update)
 
     def test_todict(self):
         """Test method for dict"""
