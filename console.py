@@ -147,11 +147,11 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         objs = storage.all()
 
-        if len(args) < 1:
-            print(["{}".format(str(v)) for _, v in objs.items()])
-            return
         if args[0] not in cClass.keys():
             print("** class doesn't exist **")
+            return
+        if len(args) < 1:
+            print(["{}".format(str(v)) for _, v in objs.items()])
             return
         else:
             print(["{}".format(str(v))
