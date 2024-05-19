@@ -1,20 +1,13 @@
 #!/usr/bin/python3
-"""This module defines a class BaseModel that defines all
-common attributes/methods for other classes."""
+"""This module contains the BaseModel class for the AirBnB project."""
 
-import models
-from datetime import datetime
 import uuid
+from datetime import datetime
+import models
 
 
 class BaseModel:
-    """BaseModel class for all classes in the AirBnB clone project."""
-
-    def __str__(self):
-        """Return a string representation of the BaseModel."""
-        return "[{}] ({}) {}".format(
-            self.__class__.__name__, self.id, self.__dict__)
-
+    """This class defines common attributes/methods for other classes."""
     def __init__(self, *args, **kwargs):
         """Initialize a new BaseModel."""
         if kwargs:
@@ -29,17 +22,20 @@ class BaseModel:
             self.updated_at = datetime.today()
             models.storage.new(self)
 
+    def __str__(self):
+        """Return a human-readable string representation of a BaseModel."""
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
+
+    def save(self):
+        """Update updated_at with the current datetime."""
+        self.updated_at = datetime.today()
+        models.storage.save()
+
     def to_dict(self):
-        """to_dic returns a dictionary containing all
-        keys/values of __dict__."""
+        """Return a dictionary representation of a BaseModel."""
         new_dict = self.__dict__.copy()
         new_dict["__class__"] = self.__class__.__name__
         new_dict["created_at"] = self.created_at.isoformat()
         new_dict["updated_at"] = self.updated_at.isoformat()
         return new_dict
-
-    def save(self):
-        """save method updates the public instance
-        attribute updated_at with the current datetime."""
-        self.updated_at = datetime.today()
-        models.storage.save()
