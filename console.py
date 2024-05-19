@@ -15,8 +15,8 @@ import re
 
 
 cClass = {'BaseModel': BaseModel, 'User': User,
-                   'Amenity': Amenity, 'City': City, 'State': State,
-                   'Place': Place, 'Review': Review}
+          'Amenity': Amenity, 'City': City, 'State': State,
+          'Place': Place, 'Review': Review}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -61,7 +61,6 @@ class HBNBCommand(cmd.Cmd):
                     mt[1], mt[0],
                     re.sub("[\"\']", "", args[0]),
                     re.sub("[\"\']", "", args[1]), args[2])
-
 
     def do_EOF(self, line):
         """Inbuilt EOF command to gracefully catch errors.
@@ -174,6 +173,7 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, arg):
         """Quit command to exit the program."""
         return True
+
 
 def validate_classname(args, check_id=False):
     """Runs checks on args to validate classname entry.
