@@ -9,6 +9,10 @@ import models
 class BaseModel:
     """A base class for all models in the AirBnB project."""
 
+    id = ""
+    created_at = datetime.today()
+    updated_at = datetime.today()
+
     def to_dict(self):
         """Get a dictionary representation of a BaseModel."""
         new_dict = self.__dict__.copy()
