@@ -20,215 +20,126 @@ cClass = {'User': User, 'BaseModel': BaseModel,
 
 
 class HBNBCommand(cmd.Cmd):
-    """Command line interpreter for the AirBnB project."""
+    """ command interpreter """
 
-    prompt = "(hbnb) "
-
-    def do_update(self, arg: str):
-        """Updates an instance based on the class name and id."""
-        args = arg.split(maxsplit=3)
-        if not validate_classname(args, check_id=True):
-            return
-
-        objsINC = storage.all()
-        key = "{}.{}".format(args[0], args[1])
-        repINC = objsINC.get(key, None)
-        if repINC is None:
-            print("** no instance found **")
-            return
-
-        mJSON = re.findall(r"{.*}", arg)
-        if not validate_attrs(args):
-            return
-        if mJSON:
-            payLOAD = None
-            try:
-                payLOAD: dict = json.loads(mJSON[0])
-            except Exception:
-                print("** invalid syntax")
-                return
-            for i, j in payLOAD.items():
-                setattr(repINC, i, j)
-            storage.save()
-            return
-        fattr = re.findall(r"^[\"\'](.*?)[\"\']", args[3])
-        if fattr:
-            setattr(repINC, args[2], fattr[0])
-        else:
-            vlist = args[3].split()
-            setattr(repINC, args[2], parse_str(vlist[0]))
-        storage.save()
-
-    def precmd(self, command_line):
-        """Defines instructions to execute before <line> is interpreted.
-        """
-        if not command_line:
-            return '\n'
-
-        pt = re.compile(r"(\w+)\.(\w+)\((.*)\)")
-        mline = pt.findall(command_line)
-        if not mline:
-            return super().precmd(command_line)
-
-        mt = mline[0]
-        if not mt[2]:
-            if mt[1] == "count":
-                objsINCE = storage.all()
-                print(len([
-                    v for _, v in objsINCE.items()
-                    if type(v).__name__ == mt[0]]))
-                return "\n"
-            return "{} {}".format(mt[1], mt[0])
-        else:
-            args = mt[2].split(", ")
-            if len(args) == 1:
-                return "{} {} {}".format(
-                    mt[1], mt[0],
-                    re.sub("[\"\']", "", mt[2]))
-            else:
-                mJSON = re.findall(r"{.*}", mt[2])
-                if (mJSON):
-                    return "{} {} {} {}".format(
-                        mt[1], mt[0],
-                        re.sub("[\"\']", "", args[0]),
-                        re.sub("\'", "\"", mJSON[0]))
-                return "{} {} {} {} {}".format(
-                    mt[1], mt[0],
-                    re.sub("[\"\']", "", args[0]),
-                    re.sub("[\"\']", "", args[1]), args[2])
-
-    def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id."""
-        args = arg.split()
-        if not validate_classname(args, check_id=True):
-            return
-
-        objs = storage.all()
-        key = "{}.{}".format(args[0], args[1])
-        rqINCE = objs.get(key, None)
-        if rqINCE is None:
-            print("** no instance found **")
-            return
-
-        del objs[key]
-        storage.save()
-
-    def do_create(self, arg):
-        """Creates a new instance."""
-        args = arg.split()
-        if not validate_classname(args):
-            return
-
-        nobj = cClass[args[0]]()
-        nobj.save()
-        print(nobj.id)
-
-    def do_EOF(self, line):
-        """Inbuilt EOF command to gracefully catch errors."""
-        print("")
-        return True
-
-    def do_show(self, arg):
-        """Prints the string representation of an instance."""
-        args = arg.split()
-        if not validate_classname(args, check_id=True):
-            return
-
-        objsINCE = storage.all()
-        key = "{}.{}".format(args[0], args[1])
-        rqINCE = objsINCE.get(key, None)
-        if rqINCE is None:
-            print("** no instance found **")
-            return
-        print(rqINCE)
-
-    def do_all(self, arg):
-        """Prints string representation of all instances."""
-        args = arg.split()
-        objs = storage.all()
-
-        if len(args) < 1:
-            print(["{}".format(str(v)) for _, v in objs.items()])
-            return
-        if args[0] not in cClass.keys():
-            print("** class doesn't exist **")
-            return
-        else:
-            print(["{}".format(str(v))
-                  for _, v in objs.items() if type(v).__name__ == args[0]])
-            return
-
-    def do_help(self, arg):
-        """To get help on a command, type help <topic>."""
-        return super().do_help(arg)
-
-    def emptyline(self):
-        """ Called when an empty line is entered in response to the prompt."""
-        pass
+    prompt = '(hbnb) '
 
     def do_quit(self, arg):
-        """Quit command to exit the program."""
+        """Quit command to exit the program"""
         return True
 
-
-def validate_attrs(args):
-    """checks if attribute name and value are present"""
-    if len(args) < 3:
-        print("** attribute name missing **")
-        return False
-    if len(args) < 4:
-        print("** value missing **")
-        return False
-    return True
-
-
-def validate_classname(args, check_id=False):
-    """validates class name and id"""
-    if len(args) < 1:
-        print("** class name missing **")
-        return False
-    if args[0] not in cClass.keys():
-        print("** class doesn't exist **")
-        return False
-    if len(args) < 2 and check_id:
-        print("** instance id missing **")
-        return False
-    return True
-
-
-def is_float(numbr):
-    """Checks if `numbr` is float.
-    """
-    try:
-        a = float(numbr)
-    except (TypeError, ValueError):
-        return False
-    else:
+    def do_EOF(self, arg):
+        """EOF command to exit the program"""
         return True
 
+    def emptyline(self):
+        """emptyline method"""
+        pass
 
-def parse_str(arg):
-    """Parses `arg` to an `int`, `float` or `string` if possible."""
-    parcer = re.sub("\"", "", arg)
+    def do_create(self, arg):
+        """Creates a new instance of BaseModel"""
+        if not arg:
+            print("** class name missing **")
+        elif arg not in cClass:
+            print("** class doesn't exist **")
+        else:
+            new = cClass[arg]()
+            new.save()
+            print(new.id)
 
-    if is_int(parcer):
-        return int(parcer)
-    elif is_float(parcer):
-        return float(parcer)
-    else:
-        return arg
+    def do_show(self, arg):
+        """Prints the string representation of an instance"""
+        if not arg:
+            print("** class name missing **")
+        else:
+            arg = arg.split()
+            if arg[0] not in cClass:
+                print("** class doesn't exist **")
+            elif len(arg) < 2:
+                print("** instance id missing **")
+            else:
+                key = arg[0] + '.' + arg[1]
+                if key in storage.all():
+                    print(storage.all()[key])
+                else:
+                    print("** no instance found **")
 
-
-def is_int(x):
-    """if `x` is int."""
-    try:
-        j = float(x)
-        h = int(j)
-    except (TypeError, ValueError):
-        return False
-    else:
-        return j == h
-
-
-if __name__ == "__main__":
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class name and id
+        """
+        if not arg:
+            print("** class name missing **")
+        else:
+            arg = arg.split()
+            if arg[0] not in cClass:
+                print("** class doesn't exist **")
+            elif len(arg) < 2:
+                print("** instance id missing **")
+            else:
+                key = arg[0] + '.' + arg[1]
+                if key in storage.all():
+                    del storage.all()[key]
+                    storage.save()
+                else:
+                    print("** no instance found **")
+    
+    def do_all(self, arg):
+        """Prints all string representation of all instances"""
+        if not arg:
+            print([str(v) for v in storage.all().values()])
+        elif arg not in cClass:
+            print("** class doesn't exist **")
+        else:
+            print([str(v) for k, v in storage.all().items() if arg in k])
+    
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id"""
+        if not arg:
+            print("** class name missing **")
+        else:
+            arg = arg.split()
+            if arg[0] not in cClass:
+                print("** class doesn't exist **")
+            elif len(arg) < 2:
+                print("** instance id missing **")
+            else:
+                key = arg[0] + '.' + arg[1]
+                if key not in storage.all():
+                    print("** no instance found **")
+                elif len(arg) < 3:
+                    print("** attribute name missing **")
+                elif len(arg) < 4:
+                    print("** value missing **")
+                else:
+                    setattr(storage.all()[key], arg[2], arg[3])
+                    storage.all()[key].save()
+    
+    def do_count(self, arg):
+        """Counts the number of instances of a class"""
+        count = 0
+        for k in storage.all():
+            if arg in k:
+                count += 1
+        print(count)
+    
+    def default(self, arg):
+        """default method"""
+        args = arg.split('.')
+        if len(args) > 1:
+            if args[1] == 'all()':
+                self.do_all(args[0])
+            elif args[1] == 'count()':
+                self.do_count(args[0])
+            elif args[1][:4] == 'show':
+                self.do_show(args[0] + ' ' + args[1][6:-2])
+            elif args[1][:7] == 'destroy':
+                self.do_destroy(args[0] + ' ' + args[1][9:-2])
+            elif args[1][:6] == 'update':
+                args[1] = args[1][8:-2]
+                args[1] = args[1].replace(',', '')
+                self.do_update(args[0] + ' ' + args[1])
+        else:
+            cmd.Cmd.default(self, arg)
+    
+if __name__ == '__main__':
     HBNBCommand().cmdloop()
