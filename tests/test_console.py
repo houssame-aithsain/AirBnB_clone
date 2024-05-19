@@ -195,13 +195,13 @@ class TestBaseModel(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             b1 = BaseModel()
             b1.age = 75
-            HBNBCommand().onecmd(f'update BaseModel {b1.id} age 25')
+            HBNBCommand().onecmd(f'update BaseModel {b1.id} age "25"')
             self.assertIn("age", b1.__dict__.keys())
-            self.assertEqual(b1.__dict__["age"], 25)
+            self.assertEqual(b1.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             b1 = BaseModel()
-            b1.savings = 25.67
+            b1.savings = "25".67
             HBNBCommand().onecmd(f'update BaseModel {b1.id} savings 35.89')
             self.assertIn("savings", b1.__dict__.keys())
             self.assertEqual(b1.__dict__["savings"], 35.89)
@@ -292,9 +292,9 @@ class TestBaseModelDotNotation(unittest.TestCase):
             b1 = BaseModel()
             b1.age = 75
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'BaseModel.update({b1.id}, age, 25)'))
+                                 f'BaseModel.update({b1.id}, age, "25")'))
             self.assertIn("age", b1.__dict__.keys())
-            self.assertEqual(b1.__dict__["age"], 25)
+            self.assertEqual(b1.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             b1 = BaseModel()
@@ -311,9 +311,9 @@ class TestBaseModelDotNotation(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             b1 = BaseModel()
             b1.age = 75
-            cmmd = f'BaseModel.update({b1.id}, {{"age": 25,"color":"black"}})'
+            cmmd = f'BaseModel.update({b1.id}, {{"age": "25","color":"black"}})'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertEqual(b1.__dict__["age"], 25)
+            self.assertEqual(b1.__dict__["age"], "25")
             self.assertIsInstance(b1.__dict__["age"], int)
 
     def test_destroy_basemodel(self):
@@ -379,13 +379,13 @@ class TestUser(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             us = User()
             us.age = 75
-            HBNBCommand().onecmd(f'update User {us.id} age 25')
+            HBNBCommand().onecmd(f'update User {us.id} age "25"')
             self.assertIn("age", us.__dict__.keys())
-            self.assertEqual(us.__dict__["age"], 25)
+            self.assertEqual(us.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             us = User()
-            us.savings = 25.67
+            us.savings = "25".67
             HBNBCommand().onecmd(f'update User {us.id} savings 35.89')
             self.assertIn("savings", us.__dict__.keys())
             self.assertEqual(us.__dict__["savings"], 35.89)
@@ -476,9 +476,9 @@ class TestUserDotNotation(unittest.TestCase):
             us = User()
             us.age = 75
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'User.update({us.id}, age, 25)'))
+                                 f'User.update({us.id}, age, "25")'))
             self.assertIn("age", us.__dict__.keys())
-            self.assertEqual(us.__dict__["age"], 25)
+            self.assertEqual(us.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             us = User()
@@ -495,9 +495,9 @@ class TestUserDotNotation(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             us = User()
             us.age = 75
-            cmmd = f'User.update({us.id}, {{"age": 25,"color":"black"}})'
+            cmmd = f'User.update({us.id}, {{"age": "25","color":"black"}})'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertEqual(us.__dict__["age"], 25)
+            self.assertEqual(us.__dict__["age"], "25")
             self.assertIsInstance(us.__dict__["age"], int)
 
     def test_destroy_user(self):
@@ -563,9 +563,9 @@ class TestState(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             st = State()
             st.age = 75
-            HBNBCommand().onecmd(f'update State {st.id} age 25')
+            HBNBCommand().onecmd(f'update State {st.id} age "25"')
             self.assertIn("age", st.__dict__.keys())
-            self.assertEqual(st.__dict__["age"], 25)
+            self.assertEqual(st.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             st = State()
@@ -653,9 +653,9 @@ class TestStateDotNotation(unittest.TestCase):
             st = State()
             st.age = 75
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'State.update({st.id}, age, 25)'))
+                                 f'State.update({st.id}, age, "25")'))
             self.assertIn("age", st.__dict__.keys())
-            self.assertEqual(st.__dict__["age"], 25)
+            self.assertEqual(st.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             st = State()
@@ -672,9 +672,9 @@ class TestStateDotNotation(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             st = State()
             st.age = 75
-            cmmd = f'State.update({st.id}, {{"age": 25,"color":"black"}})'
+            cmmd = f'State.update({st.id}, {{"age": "25","color":"black"}})'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertEqual(st.__dict__["age"], 25)
+            self.assertEqual(st.__dict__["age"], "25")
             self.assertIsInstance(st.__dict__["age"], int)
 
     def test_destroy_state(self):
@@ -740,9 +740,9 @@ class TestReview(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             rv = Review()
             rv.age = 75
-            HBNBCommand().onecmd(f'update Review {rv.id} age 25')
+            HBNBCommand().onecmd(f'update Review {rv.id} age "25"')
             self.assertIn("age", rv.__dict__.keys())
-            self.assertEqual(rv.__dict__["age"], 25)
+            self.assertEqual(rv.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             rv = Review()
@@ -830,9 +830,9 @@ class TestReviewDotNotation(unittest.TestCase):
             rv = Review()
             rv.age = 75
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'Review.update({rv.id}, age, 25)'))
+                                 f'Review.update({rv.id}, age, "25")'))
             self.assertIn("age", rv.__dict__.keys())
-            self.assertEqual(rv.__dict__["age"], 25)
+            self.assertEqual(rv.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             rv = Review()
@@ -849,9 +849,9 @@ class TestReviewDotNotation(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             rv = Review()
             rv.age = 75
-            cmmd = f'Review.update({rv.id}, {{"age": 25,"color":"black"}})'
+            cmmd = f'Review.update({rv.id}, {{"age": "25","color":"black"}})'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertEqual(rv.__dict__["age"], 25)
+            self.assertEqual(rv.__dict__["age"], "25")
             self.assertIsInstance(rv.__dict__["age"], int)
 
     def test_destroy_review(self):
@@ -917,9 +917,9 @@ class TestPlace(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             pl = Place()
             pl.age = 75
-            HBNBCommand().onecmd(f'update Place {pl.id} age 25')
+            HBNBCommand().onecmd(f'update Place {pl.id} age "25"')
             self.assertIn("age", pl.__dict__.keys())
-            self.assertEqual(pl.__dict__["age"], 25)
+            self.assertEqual(pl.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             pl = Place()
@@ -1007,9 +1007,9 @@ class TestPlaceDotNotation(unittest.TestCase):
             pl = Place()
             pl.age = 75
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'Place.update({pl.id}, age, 25)'))
+                                 f'Place.update({pl.id}, age, "25")'))
             self.assertIn("age", pl.__dict__.keys())
-            self.assertEqual(pl.__dict__["age"], 25)
+            self.assertEqual(pl.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             pl = Place()
@@ -1026,9 +1026,9 @@ class TestPlaceDotNotation(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             pl = Place()
             pl.age = 75
-            cmmd = f'Place.update({pl.id}, {{"age": 25,"color":"black"}})'
+            cmmd = f'Place.update({pl.id}, {{"age": "25","color":"black"}})'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertEqual(pl.__dict__["age"], 25)
+            self.assertEqual(pl.__dict__["age"], "25")
             self.assertIsInstance(pl.__dict__["age"], int)
 
     def test_destroy_place(self):
@@ -1094,9 +1094,9 @@ class TestAmenity(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             am = Amenity()
             am.age = 75
-            HBNBCommand().onecmd(f'update Amenity {am.id} age 25')
+            HBNBCommand().onecmd(f'update Amenity {am.id} age "25"')
             self.assertIn("age", am.__dict__.keys())
-            self.assertEqual(am.__dict__["age"], 25)
+            self.assertEqual(am.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             am = Amenity()
@@ -1184,9 +1184,9 @@ class TestAmenityDotNotation(unittest.TestCase):
             am = Amenity()
             am.age = 75
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'Amenity.update({am.id}, age, 25)'))
+                                 f'Amenity.update({am.id}, age, "25")'))
             self.assertIn("age", am.__dict__.keys())
-            self.assertEqual(am.__dict__["age"], 25)
+            self.assertEqual(am.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             am = Amenity()
@@ -1203,9 +1203,9 @@ class TestAmenityDotNotation(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             am = Amenity()
             am.age = 75
-            cmmd = f'Amenity.update({am.id}, {{"age": 25,"color":"black"}})'
+            cmmd = f'Amenity.update({am.id}, {{"age": "25","color":"black"}})'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertEqual(am.__dict__["age"], 25)
+            self.assertEqual(am.__dict__["age"], "25")
             self.assertIsInstance(am.__dict__["age"], int)
 
     def test_destroy_amenity(self):
@@ -1271,9 +1271,9 @@ class TestCity(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             cty = City()
             cty.age = 75
-            HBNBCommand().onecmd(f'update City {cty.id} age 25')
+            HBNBCommand().onecmd(f'update City {cty.id} age "25"')
             self.assertIn("age", cty.__dict__.keys())
-            self.assertEqual(cty.__dict__["age"], 25)
+            self.assertEqual(cty.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             cty = City()
@@ -1361,9 +1361,9 @@ class TestCityDotNotation(unittest.TestCase):
             cty = City()
             cty.age = 75
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'City.update({cty.id}, age, 25)'))
+                                 f'City.update({cty.id}, age, "25")'))
             self.assertIn("age", cty.__dict__.keys())
-            self.assertEqual(cty.__dict__["age"], 25)
+            self.assertEqual(cty.__dict__["age"], "25")
 
         with patch('sys.stdout', new=StringIO()) as f:
             cty = City()
@@ -1380,9 +1380,9 @@ class TestCityDotNotation(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             cty = City()
             cty.age = 75
-            cmmd = f'City.update({cty.id}, {{"age": 25,"color":"black"}})'
+            cmmd = f'City.update({cty.id}, {{"age": "25","color":"black"}})'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertEqual(cty.__dict__["age"], 25)
+            self.assertEqual(cty.__dict__["age"], "25")
             self.assertIsInstance(cty.__dict__["age"], int)
 
     def test_destroy_city(self):
