@@ -13,13 +13,14 @@ from models.state import State
 from models.amenity import Amenity
 
 
-cClass = {'User': User, 'BaseModel': BaseModel,
-          'Amenity': Amenity, 'City': City, 'State': State,
-          'Place': Place, 'Review': Review}
 
 
 class FileStorage:
     """Manages storage of JSON file used to store objects."""
+    cClass = {'User': User, 'BaseModel': BaseModel,
+              'Amenity': Amenity, 'City': City, 'State': State,
+              'Place': Place, 'Review': Review}
+
     __file_path = "file.json"
     __objects = {}
 
