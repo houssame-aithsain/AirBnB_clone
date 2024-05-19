@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines the entry point of the command interpreter."""
+""" about the console module """
 
 from models.base_model import BaseModel
 from models.user import User
@@ -14,53 +14,15 @@ import cmd
 import re
 
 
-cClass = {'BaseModel': BaseModel, 'User': User,
+cClass = {'User': User, 'BaseModel': BaseModel,
           'Amenity': Amenity, 'City': City, 'State': State,
           'Place': Place, 'Review': Review}
 
 
 class HBNBCommand(cmd.Cmd):
-    """The command interpreter"""
+    """Command line interpreter for the AirBnB project."""
 
     prompt = "(hbnb) "
-
-    def precmd(self, line):
-        """Defines instructions to execute before <line> is interpreted.
-        """
-        if not line:
-            return '\n'
-
-        pt = re.compile(r"(\w+)\.(\w+)\((.*)\)")
-        mline = pt.findall(line)
-        if not mline:
-            return super().precmd(line)
-
-        mt = mline[0]
-        if not mt[2]:
-            if mt[1] == "count":
-                objsINCE = storage.all()
-                print(len([
-                    v for _, v in objsINCE.items()
-                    if type(v).__name__ == mt[0]]))
-                return "\n"
-            return "{} {}".format(mt[1], mt[0])
-        else:
-            args = mt[2].split(", ")
-            if len(args) == 1:
-                return "{} {} {}".format(
-                    mt[1], mt[0],
-                    re.sub("[\"\']", "", mt[2]))
-            else:
-                match_json = re.findall(r"{.*}", mt[2])
-                if (match_json):
-                    return "{} {} {} {}".format(
-                        mt[1], mt[0],
-                        re.sub("[\"\']", "", args[0]),
-                        re.sub("\'", "\"", match_json[0]))
-                return "{} {} {} {} {}".format(
-                    mt[1], mt[0],
-                    re.sub("[\"\']", "", args[0]),
-                    re.sub("[\"\']", "", args[1]), args[2])
 
     def do_update(self, arg: str):
         """Updates an instance based on the class name and id."""
@@ -97,9 +59,46 @@ class HBNBCommand(cmd.Cmd):
             setattr(repINC, args[2], parse_str(vlist[0]))
         storage.save()
 
-    def do_create(self, arg):
-        """Creates a new instance.
+    def precmd(self, command_line):
+        """Defines instructions to execute before <line> is interpreted.
         """
+        if not command_line:
+            return '\n'
+
+        pt = re.compile(r"(\w+)\.(\w+)\((.*)\)")
+        mline = pt.findall(command_line)
+        if not mline:
+            return super().precmd(command_line)
+
+        mt = mline[0]
+        if not mt[2]:
+            if mt[1] == "count":
+                objsINCE = storage.all()
+                print(len([
+                    v for _, v in objsINCE.items()
+                    if type(v).__name__ == mt[0]]))
+                return "\n"
+            return "{} {}".format(mt[1], mt[0])
+        else:
+            args = mt[2].split(", ")
+            if len(args) == 1:
+                return "{} {} {}".format(
+                    mt[1], mt[0],
+                    re.sub("[\"\']", "", mt[2]))
+            else:
+                match_json = re.findall(r"{.*}", mt[2])
+                if (match_json):
+                    return "{} {} {} {}".format(
+                        mt[1], mt[0],
+                        re.sub("[\"\']", "", args[0]),
+                        re.sub("\'", "\"", match_json[0]))
+                return "{} {} {} {} {}".format(
+                    mt[1], mt[0],
+                    re.sub("[\"\']", "", args[0]),
+                    re.sub("[\"\']", "", args[1]), args[2])
+
+    def do_create(self, arg):
+        """Creates a new instance."""
         args = arg.split()
         if not validate_classname(args):
             return
@@ -174,34 +173,34 @@ class HBNBCommand(cmd.Cmd):
 
 def validate_attrs(args):
     """checks if attribute name and value are present"""
-    if len(args) < 3:
-        print("** attribute name missing **")
-        return False
     if len(args) < 4:
         print("** value missing **")
+        return False
+    if len(args) < 3:
+        print("** attribute name missing **")
         return False
     return True
 
 
 def validate_classname(args, check_id=False):
     """validates class name and id"""
+    if len(args) < 2 and check_id:
+        print("** instance id missing **")
+        return False
     if len(args) < 1:
         print("** class name missing **")
         return False
     if args[0] not in cClass.keys():
         print("** class doesn't exist **")
         return False
-    if len(args) < 2 and check_id:
-        print("** instance id missing **")
-        return False
     return True
 
 
-def is_float(x):
-    """Checks if `x` is float.
+def is_float(numbr):
+    """Checks if `numbr` is float.
     """
     try:
-        a = float(x)
+        a = float(numbr)
     except (TypeError, ValueError):
         return False
     else:
@@ -210,12 +209,12 @@ def is_float(x):
 
 def parse_str(arg):
     """Parses `arg` to an `int`, `float` or `string` if possible."""
-    parsed = re.sub("\"", "", arg)
+    parcer = re.sub("\"", "", arg)
 
-    if is_int(parsed):
-        return int(parsed)
-    elif is_float(parsed):
-        return float(parsed)
+    if is_int(parcer):
+        return int(parcer)
+    elif is_float(parcer):
+        return float(parcer)
     else:
         return arg
 
