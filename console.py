@@ -1,20 +1,20 @@
 #!/usr/bin/python3
 """This module defines the entry point of the command interpreter."""
 
-import re
-import cmd
-import json
-from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
-from models.city import City
-from models.review import Review
-from models.amenity import Amenity
 from models.place import Place
+from models import storage
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+import json
+import cmd
+import re
 
 
-current_classes = {'BaseModel': BaseModel, 'User': User,
+cClass = {'BaseModel': BaseModel, 'User': User,
                    'Amenity': Amenity, 'City': City, 'State': State,
                    'Place': Place, 'Review': Review}
 
@@ -31,57 +31,43 @@ class HBNBCommand(cmd.Cmd):
             return '\n'
 
         pattern = re.compile(r"(\w+)\.(\w+)\((.*)\)")
-        match_list = pattern.findall(line)
-        if not match_list:
+        mline = pattern.findall(line)
+        if not mline:
             return super().precmd(line)
 
-        match_tuple = match_list[0]
-        if not match_tuple[2]:
-            if match_tuple[1] == "count":
-                instance_objs = storage.all()
+        mt = mline[0]
+        if not mt[2]:
+            if mt[1] == "count":
+                objs_inc = storage.all()
                 print(len([
-                    v for _, v in instance_objs.items()
-                    if type(v).__name__ == match_tuple[0]]))
+                    v for _, v in objs_inc.items()
+                    if type(v).__name__ == mt[0]]))
                 return "\n"
-            return "{} {}".format(match_tuple[1], match_tuple[0])
+            return "{} {}".format(mt[1], mt[0])
         else:
-            args = match_tuple[2].split(", ")
+            args = mt[2].split(", ")
             if len(args) == 1:
                 return "{} {} {}".format(
-                    match_tuple[1], match_tuple[0],
-                    re.sub("[\"\']", "", match_tuple[2]))
+                    mt[1], mt[0],
+                    re.sub("[\"\']", "", mt[2]))
             else:
-                match_json = re.findall(r"{.*}", match_tuple[2])
+                match_json = re.findall(r"{.*}", mt[2])
                 if (match_json):
                     return "{} {} {} {}".format(
-                        match_tuple[1], match_tuple[0],
+                        mt[1], mt[0],
                         re.sub("[\"\']", "", args[0]),
                         re.sub("\'", "\"", match_json[0]))
                 return "{} {} {} {} {}".format(
-                    match_tuple[1], match_tuple[0],
+                    mt[1], mt[0],
                     re.sub("[\"\']", "", args[0]),
                     re.sub("[\"\']", "", args[1]), args[2])
 
-    def do_help(self, arg):
-        """To get help on a command, type help <topic>.
-        """
-        return super().do_help(arg)
 
     def do_EOF(self, line):
         """Inbuilt EOF command to gracefully catch errors.
         """
         print("")
         return True
-
-    def do_quit(self, arg):
-        """Quit command to exit the program.
-        """
-        return True
-
-    def emptyline(self):
-        """Override default `empty line + return` behaviour.
-        """
-        pass
 
     def do_create(self, arg):
         """Creates a new instance.
@@ -90,7 +76,7 @@ class HBNBCommand(cmd.Cmd):
         if not validate_classname(args):
             return
 
-        new_obj = current_classes[args[0]]()
+        new_obj = cClass[args[0]]()
         new_obj.save()
         print(new_obj.id)
 
@@ -101,9 +87,9 @@ class HBNBCommand(cmd.Cmd):
         if not validate_classname(args, check_id=True):
             return
 
-        instance_objs = storage.all()
+        objs_inc = storage.all()
         key = "{}.{}".format(args[0], args[1])
-        req_instance = instance_objs.get(key, None)
+        req_instance = objs_inc.get(key, None)
         if req_instance is None:
             print("** no instance found **")
             return
@@ -116,69 +102,78 @@ class HBNBCommand(cmd.Cmd):
         if not validate_classname(args, check_id=True):
             return
 
-        instance_objs = storage.all()
+        objs_inc = storage.all()
         key = "{}.{}".format(args[0], args[1])
-        req_instance = instance_objs.get(key, None)
+        req_instance = objs_inc.get(key, None)
         if req_instance is None:
             print("** no instance found **")
             return
 
-        del instance_objs[key]
+        del objs_inc[key]
         storage.save()
 
-    def do_all(self, arg):
-        """Prints string representation of all instances.
-        """
-        args = arg.split()
-        all_objs = storage.all()
-
-        if len(args) < 1:
-            print(["{}".format(str(v)) for _, v in all_objs.items()])
-            return
-        if args[0] not in current_classes.keys():
-            print("** class doesn't exist **")
-            return
-        else:
-            print(["{}".format(str(v))
-                  for _, v in all_objs.items() if type(v).__name__ == args[0]])
-            return
-
     def do_update(self, arg: str):
-        """Updates an instance based on the class name and id.
-        """
+        """Updates an instance based on the class name and id."""
         args = arg.split(maxsplit=3)
         if not validate_classname(args, check_id=True):
             return
 
-        instance_objs = storage.all()
+        objsINC = storage.all()
         key = "{}.{}".format(args[0], args[1])
-        req_instance = instance_objs.get(key, None)
-        if req_instance is None:
+        repINC = objsINC.get(key, None)
+        if repINC is None:
             print("** no instance found **")
             return
 
-        match_json = re.findall(r"{.*}", arg)
-        if match_json:
-            payload = None
+        mJSON = re.findall(r"{.*}", arg)
+        if mJSON:
+            payLOAD = None
             try:
-                payload: dict = json.loads(match_json[0])
+                payLOAD: dict = json.loads(mJSON[0])
             except Exception:
                 print("** invalid syntax")
                 return
-            for k, v in payload.items():
-                setattr(req_instance, k, v)
+            for k, v in payLOAD.items():
+                setattr(repINC, k, v)
             storage.save()
             return
         if not validate_attrs(args):
             return
-        first_attr = re.findall(r"^[\"\'](.*?)[\"\']", args[3])
-        if first_attr:
-            setattr(req_instance, args[2], first_attr[0])
+        fattr = re.findall(r"^[\"\'](.*?)[\"\']", args[3])
+        if fattr:
+            setattr(repINC, args[2], fattr[0])
         else:
             value_list = args[3].split()
-            setattr(req_instance, args[2], parse_str(value_list[0]))
+            setattr(repINC, args[2], parse_str(value_list[0]))
         storage.save()
 
+    def do_all(self, arg):
+        """Prints string representation of all instances."""
+        args = arg.split()
+        objs = storage.all()
+
+        if len(args) < 1:
+            print(["{}".format(str(v)) for _, v in objs.items()])
+            return
+        if args[0] not in cClass.keys():
+            print("** class doesn't exist **")
+            return
+        else:
+            print(["{}".format(str(v))
+                  for _, v in objs.items() if type(v).__name__ == args[0]])
+            return
+
+    def do_help(self, arg):
+        """To get help on a command, type help <topic>."""
+        return super().do_help(arg)
+
+    def emptyline(self):
+        """Override default `empty line + return` behaviour."""
+        pass
+
+    def do_quit(self, arg):
+        """Quit command to exit the program."""
+        return True
 
 def validate_classname(args, check_id=False):
     """Runs checks on args to validate classname entry.
@@ -186,7 +181,7 @@ def validate_classname(args, check_id=False):
     if len(args) < 1:
         print("** class name missing **")
         return False
-    if args[0] not in current_classes.keys():
+    if args[0] not in cClass.keys():
         print("** class doesn't exist **")
         return False
     if len(args) < 2 and check_id:
