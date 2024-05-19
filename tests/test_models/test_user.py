@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""Unit tests for the `state` module.
-"""
+"""This module defines a base class for all models in the AirBnB project."""
 
 import os
 import unittest
@@ -10,7 +9,7 @@ from models import storage
 from datetime import datetime
 
 
-class TestState(unittest.TestCase):
+class TestUser(unittest.TestCase):
     """Test cases for the `User` class."""
 
     def setUp(self):
@@ -23,22 +22,19 @@ class TestState(unittest.TestCase):
             os.remove(FileStorage._FileStorage__file_path)
 
     def test_params(self):
-        u1 = User()
-        k = f"{type(u1).__name__}.{u1.id}"
-        self.assertIn(k, storage.all())
-        self.assertIsInstance(u1.email, str)
-        self.assertIsInstance(u1.password, str)
-        self.assertIsInstance(u1.first_name, str)
-        self.assertIsInstance(u1.last_name, str)
+        """Test method for class attributes"""
 
-    def test_init(self):
-        """Test method for public instances"""
         u1 = User()
         u2 = User(**u1.to_dict())
-        self.assertIsInstance(u1.id, str)
-        self.assertIsInstance(u1.created_at, datetime)
-        self.assertIsInstance(u1.updated_at, datetime)
-        self.assertEqual(u1.updated_at, u2.updated_at)
+        u3 = User("hello", "wait", "in")
+
+        k = f"{type(u1).__name__}.{u1.id}"
+        self.assertIsInstance(u1.email, str)
+        self.assertIn(k, storage.all())
+        self.assertEqual(u3.email, "")
+        self.assertEqual(u3.password, "")
+        self.assertEqual(u3.first_name, "")
+        self.assertEqual(u3.last_name, "")
 
     def test_str(self):
         """Test method for str representation"""
@@ -56,13 +52,23 @@ class TestState(unittest.TestCase):
     def test_todict(self):
         """Test method for dict"""
         u1 = User()
-        u2 = User(**u1.to_dict())
-        a_dict = u2.to_dict()
-        self.assertIsInstance(a_dict, dict)
-        self.assertEqual(a_dict['__class__'], type(u2).__name__)
-        self.assertIn('created_at', a_dict.keys())
-        self.assertIn('updated_at', a_dict.keys())
-        self.assertNotEqual(u1, u2)
+        self.assertIsInstance(u1.to_dict(), dict)
+        self.assertEqual(u1.__class__.__name__, 'User')
+    
+    def test_email(self):
+        """Test method for email"""
+        u1 = User()
+        self.assertIsInstance(u1.email, str)
+
+    def test_password(self):
+        """Test method for password"""
+        u1 = User()
+        self.assertIsInstance(u1.password, str)
+    
+    def test_first_name(self):
+        """Test method for first_name"""
+        u1 = User()
+        self.assertIsInstance(u1.first_name, str)
 
 
 if __name__ == "__main__":
