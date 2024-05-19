@@ -254,7 +254,7 @@ class TestBaseModelDotNotation(unittest.TestCase):
             HBNBCommand().onecmd(HBNBCommand().precmd('BaseModel.count()'))
             count = 0
             for i in storage.all().values():
-                if type(i) == BaseModel:
+                if type(i) is BaseModel:
                     count += 1
             self.assertEqual(int(f.getvalue()), count)
 
@@ -438,7 +438,7 @@ class TestUserDotNotation(unittest.TestCase):
             HBNBCommand().onecmd(HBNBCommand().precmd('User.count()'))
             count = 0
             for i in storage.all().values():
-                if type(i) == User:
+                if type(i) is User:
                     count += 1
             self.assertEqual(int(f.getvalue()), count)
 
@@ -615,7 +615,7 @@ class TestStateDotNotation(unittest.TestCase):
             HBNBCommand().onecmd(HBNBCommand().precmd('State.count()'))
             count = 0
             for i in storage.all().values():
-                if type(i) == State:
+                if type(i) is State:
                     count += 1
             self.assertEqual(int(f.getvalue()), count)
 
@@ -792,7 +792,7 @@ class TestReviewDotNotation(unittest.TestCase):
             HBNBCommand().onecmd(HBNBCommand().precmd('Review.count()'))
             count = 0
             for i in storage.all().values():
-                if type(i) == Review:
+                if type(i) is Review:
                     count += 1
             self.assertEqual(int(f.getvalue()), count)
 
@@ -969,7 +969,7 @@ class TestPlaceDotNotation(unittest.TestCase):
             HBNBCommand().onecmd(HBNBCommand().precmd('Place.count()'))
             count = 0
             for i in storage.all().values():
-                if type(i) == Place:
+                if type(i) is Place:
                     count += 1
             self.assertEqual(int(f.getvalue()), count)
 
@@ -1146,7 +1146,7 @@ class TestAmenityDotNotation(unittest.TestCase):
             HBNBCommand().onecmd(HBNBCommand().precmd('Amenity.count()'))
             count = 0
             for i in storage.all().values():
-                if type(i) == Amenity:
+                if type(i) is Amenity:
                     count += 1
             self.assertEqual(int(f.getvalue()), count)
 
@@ -1323,7 +1323,7 @@ class TestCityDotNotation(unittest.TestCase):
             HBNBCommand().onecmd(HBNBCommand().precmd('City.count()'))
             count = 0
             for i in storage.all().values():
-                if type(i) == City:
+                if type(i) is City:
                     count += 1
             self.assertEqual(int(f.getvalue()), count)
 
