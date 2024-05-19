@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """Defines unittests for console.py.
 """
-from io import StringIO
+
 import os
+from io import StringIO
 import unittest
 from unittest.mock import patch
 from console import HBNBCommand

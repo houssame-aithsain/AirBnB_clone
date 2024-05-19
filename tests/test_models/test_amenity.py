@@ -1,12 +1,16 @@
 #!/usr/bin/python3
 """Unit tests for the `amenity` module.
 """
+import sys
 import os
 import unittest
 from models import storage
 from datetime import datetime
 from models.amenity import Amenity
 from models.engine.file_storage import FileStorage
+
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../models')))
 
 
 class TestAmenity(unittest.TestCase):
