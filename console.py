@@ -86,12 +86,12 @@ class HBNBCommand(cmd.Cmd):
                     mt[1], mt[0],
                     re.sub("[\"\']", "", mt[2]))
             else:
-                match_json = re.findall(r"{.*}", mt[2])
-                if (match_json):
+                mJSON = re.findall(r"{.*}", mt[2])
+                if (mJSON):
                     return "{} {} {} {}".format(
                         mt[1], mt[0],
                         re.sub("[\"\']", "", args[0]),
-                        re.sub("\'", "\"", match_json[0]))
+                        re.sub("\'", "\"", mJSON[0]))
                 return "{} {} {} {} {}".format(
                     mt[1], mt[0],
                     re.sub("[\"\']", "", args[0]),
