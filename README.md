@@ -17,7 +17,7 @@
     <h3>How to Start the Command Interpreter</h3>
     <ol>
         <li><strong>Clone the Repository</strong>:
-            <pre><code>git clone https://github.com/YeabkalW/AirBnB_clone.git</code></pre>
+            <pre><code>git clone https://github.com/houssame-aithsain/AirBnB_clone.git</code></pre>
         </li>
         <li><strong>Navigate to the Project Directory</strong>:
             <pre><code>cd AirBnB_clone</code></pre>
