@@ -97,6 +97,22 @@ class HBNBCommand(cmd.Cmd):
                     re.sub("[\"\']", "", args[0]),
                     re.sub("[\"\']", "", args[1]), args[2])
 
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class name and id."""
+        args = arg.split()
+        if not validate_classname(args, check_id=True):
+            return
+
+        objs = storage.all()
+        key = "{}.{}".format(args[0], args[1])
+        rqINCE = objs.get(key, None)
+        if rqINCE is None:
+            print("** no instance found **")
+            return
+
+        del objs[key]
+        storage.save()
+
     def do_create(self, arg):
         """Creates a new instance."""
         args = arg.split()
@@ -126,32 +142,16 @@ class HBNBCommand(cmd.Cmd):
             return
         print(rqINCE)
 
-    def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id."""
-        args = arg.split()
-        if not validate_classname(args, check_id=True):
-            return
-
-        objs = storage.all()
-        key = "{}.{}".format(args[0], args[1])
-        rqINCE = objs.get(key, None)
-        if rqINCE is None:
-            print("** no instance found **")
-            return
-
-        del objs[key]
-        storage.save()
-
     def do_all(self, arg):
         """Prints string representation of all instances."""
         args = arg.split()
         objs = storage.all()
 
-        if args[0] not in cClass.keys():
-            print("** class doesn't exist **")
-            return
         if len(args) < 1:
             print(["{}".format(str(v)) for _, v in objs.items()])
+            return
+        if args[0] not in cClass.keys():
+            print("** class doesn't exist **")
             return
         else:
             print(["{}".format(str(v))
@@ -184,11 +184,11 @@ def validate_attrs(args):
 
 def validate_classname(args, check_id=False):
     """validates class name and id"""
-    if args[0] not in cClass.keys():
-        print("** class doesn't exist **")
-        return False
     if len(args) < 1:
         print("** class name missing **")
+        return False
+    if args[0] not in cClass.keys():
+        print("** class doesn't exist **")
         return False
     if len(args) < 2 and check_id:
         print("** instance id missing **")
