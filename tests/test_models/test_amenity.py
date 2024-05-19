@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Unit tests for the `amenity` module.
 """
+
 import sys
 import os
 import unittest

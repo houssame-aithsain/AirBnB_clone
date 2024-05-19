@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-#
+# this is the test for amenity
 
 import unittest
 from models.base_model import BaseModel

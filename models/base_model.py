@@ -8,7 +8,6 @@ import models
 
 class BaseModel:
     """This class defines common attributes/methods for other classes."""
-
     def __init__(self, *args, **kwargs):
         """Initialize a new BaseModel."""
         if kwargs:

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This module defines the entry point of the command interpreter."""
+
 import re
 import cmd
 import json
@@ -12,22 +13,14 @@ from models.review import Review
 from models.amenity import Amenity
 from models.place import Place
 
+
 current_classes = {'BaseModel': BaseModel, 'User': User,
                    'Amenity': Amenity, 'City': City, 'State': State,
                    'Place': Place, 'Review': Review}
 
 
 class HBNBCommand(cmd.Cmd):
-    """The command interpreter.
-
-    This class represents the command interpreter, and the control center
-    of this project. It defines function handlers for all commands inputted
-    in the console and calls the appropriate storage engine APIs to manipulate
-    application data / models.
-
-    It sub-classes Python's `cmd.Cmd` class which provides a simple framework
-    for writing line-oriented command interpreters.
-    """
+    """The command interpreter"""
 
     prompt = "(hbnb) "
 
