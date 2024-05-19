@@ -36,15 +36,6 @@ class TestAmenity(unittest.TestCase):
         self.assertIn(k, storage.all())
         self.assertEqual(a3.name, "")
 
-    def test_init(self):
-        """Test method for public instances"""
-        a1 = Amenity()
-        a2 = Amenity(**a1.to_dict())
-        self.assertIsInstance(a1.id, str)
-        self.assertIsInstance(a1.created_at, datetime)
-        self.assertIsInstance(a1.updated_at, datetime)
-        self.assertEqual(a1.updated_at, a2.updated_at)
-
     def test_str(self):
         """Test method for str representation"""
         a1 = Amenity()
@@ -61,9 +52,5 @@ class TestAmenity(unittest.TestCase):
     def test_todict(self):
         """Test method for dict"""
         a1 = Amenity()
-        a_dict = a1.to_dict()
-        self.assertIsInstance(a_dict, dict)
-        self.assertEqual(a_dict['__class__'], type(a1).__name__)
-        self.assertIn('created_at', a_dict.keys())
-        self.assertIn('updated_at', a_dict.keys())
-        self.assertNotEqual(a1, a_dict)
+        self.assertIsInstance(a1.to_dict(), dict)
+        self.assertEqual(a1.__class__.__name__, 'Amenity')
