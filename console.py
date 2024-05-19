@@ -173,25 +173,25 @@ class HBNBCommand(cmd.Cmd):
 
 def validate_attrs(args):
     """checks if attribute name and value are present"""
-    if len(args) < 4:
-        print("** value missing **")
-        return False
     if len(args) < 3:
         print("** attribute name missing **")
+        return False
+    if len(args) < 4:
+        print("** value missing **")
         return False
     return True
 
 
 def validate_classname(args, check_id=False):
     """validates class name and id"""
-    if len(args) < 2 and check_id:
-        print("** instance id missing **")
+    if args[0] not in cClass.keys():
+        print("** class doesn't exist **")
         return False
     if len(args) < 1:
         print("** class name missing **")
         return False
-    if args[0] not in cClass.keys():
-        print("** class doesn't exist **")
+    if len(args) < 2 and check_id:
+        print("** instance id missing **")
         return False
     return True
 
