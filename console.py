@@ -30,17 +30,17 @@ class HBNBCommand(cmd.Cmd):
         if not line:
             return '\n'
 
-        pattern = re.compile(r"(\w+)\.(\w+)\((.*)\)")
-        mline = pattern.findall(line)
+        pt = re.compile(r"(\w+)\.(\w+)\((.*)\)")
+        mline = pt.findall(line)
         if not mline:
             return super().precmd(line)
 
         mt = mline[0]
         if not mt[2]:
             if mt[1] == "count":
-                objs_inc = storage.all()
+                objsINCE = storage.all()
                 print(len([
-                    v for _, v in objs_inc.items()
+                    v for _, v in objsINCE.items()
                     if type(v).__name__ == mt[0]]))
                 return "\n"
             return "{} {}".format(mt[1], mt[0])
@@ -62,55 +62,6 @@ class HBNBCommand(cmd.Cmd):
                     re.sub("[\"\']", "", args[0]),
                     re.sub("[\"\']", "", args[1]), args[2])
 
-    def do_EOF(self, line):
-        """Inbuilt EOF command to gracefully catch errors.
-        """
-        print("")
-        return True
-
-    def do_create(self, arg):
-        """Creates a new instance.
-        """
-        args = arg.split()
-        if not validate_classname(args):
-            return
-
-        new_obj = cClass[args[0]]()
-        new_obj.save()
-        print(new_obj.id)
-
-    def do_show(self, arg):
-        """Prints the string representation of an instance.
-        """
-        args = arg.split()
-        if not validate_classname(args, check_id=True):
-            return
-
-        objs_inc = storage.all()
-        key = "{}.{}".format(args[0], args[1])
-        req_instance = objs_inc.get(key, None)
-        if req_instance is None:
-            print("** no instance found **")
-            return
-        print(req_instance)
-
-    def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id.
-        """
-        args = arg.split()
-        if not validate_classname(args, check_id=True):
-            return
-
-        objs_inc = storage.all()
-        key = "{}.{}".format(args[0], args[1])
-        req_instance = objs_inc.get(key, None)
-        if req_instance is None:
-            print("** no instance found **")
-            return
-
-        del objs_inc[key]
-        storage.save()
-
     def do_update(self, arg: str):
         """Updates an instance based on the class name and id."""
         args = arg.split(maxsplit=3)
@@ -125,6 +76,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         mJSON = re.findall(r"{.*}", arg)
+        if not validate_attrs(args):
+            return
         if mJSON:
             payLOAD = None
             try:
@@ -132,18 +85,62 @@ class HBNBCommand(cmd.Cmd):
             except Exception:
                 print("** invalid syntax")
                 return
-            for k, v in payLOAD.items():
-                setattr(repINC, k, v)
+            for i, j in payLOAD.items():
+                setattr(repINC, i, j)
             storage.save()
-            return
-        if not validate_attrs(args):
             return
         fattr = re.findall(r"^[\"\'](.*?)[\"\']", args[3])
         if fattr:
             setattr(repINC, args[2], fattr[0])
         else:
-            value_list = args[3].split()
-            setattr(repINC, args[2], parse_str(value_list[0]))
+            vlist = args[3].split()
+            setattr(repINC, args[2], parse_str(vlist[0]))
+        storage.save()
+
+    def do_create(self, arg):
+        """Creates a new instance.
+        """
+        args = arg.split()
+        if not validate_classname(args):
+            return
+
+        nobj = cClass[args[0]]()
+        nobj.save()
+        print(nobj.id)
+
+    def do_EOF(self, line):
+        """Inbuilt EOF command to gracefully catch errors."""
+        print("")
+        return True
+
+    def do_show(self, arg):
+        """Prints the string representation of an instance."""
+        args = arg.split()
+        if not validate_classname(args, check_id=True):
+            return
+
+        objsINCE = storage.all()
+        key = "{}.{}".format(args[0], args[1])
+        rqINCE = objsINCE.get(key, None)
+        if rqINCE is None:
+            print("** no instance found **")
+            return
+        print(rqINCE)
+
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class name and id."""
+        args = arg.split()
+        if not validate_classname(args, check_id=True):
+            return
+
+        objs = storage.all()
+        key = "{}.{}".format(args[0], args[1])
+        rqINCE = objs.get(key, None)
+        if rqINCE is None:
+            print("** no instance found **")
+            return
+
+        del objs[key]
         storage.save()
 
     def do_all(self, arg):
@@ -167,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
         return super().do_help(arg)
 
     def emptyline(self):
-        """Override default `empty line + return` behaviour."""
+        """ Called when an empty line is entered in response to the prompt."""
         pass
 
     def do_quit(self, arg):
@@ -175,9 +172,19 @@ class HBNBCommand(cmd.Cmd):
         return True
 
 
+def validate_attrs(args):
+    """checks if attribute name and value are present"""
+    if len(args) < 3:
+        print("** attribute name missing **")
+        return False
+    if len(args) < 4:
+        print("** value missing **")
+        return False
+    return True
+
+
 def validate_classname(args, check_id=False):
-    """Runs checks on args to validate classname entry.
-    """
+    """validates class name and id"""
     if len(args) < 1:
         print("** class name missing **")
         return False
@@ -186,18 +193,6 @@ def validate_classname(args, check_id=False):
         return False
     if len(args) < 2 and check_id:
         print("** instance id missing **")
-        return False
-    return True
-
-
-def validate_attrs(args):
-    """Runs checks on args to validate classname attributes and values.
-    """
-    if len(args) < 3:
-        print("** attribute name missing **")
-        return False
-    if len(args) < 4:
-        print("** value missing **")
         return False
     return True
 
@@ -213,21 +208,8 @@ def is_float(x):
         return True
 
 
-def is_int(x):
-    """Checks if `x` is int.
-    """
-    try:
-        a = float(x)
-        b = int(a)
-    except (TypeError, ValueError):
-        return False
-    else:
-        return a == b
-
-
 def parse_str(arg):
-    """Parse `arg` to an `int`, `float` or `string`.
-    """
+    """Parses `arg` to an `int`, `float` or `string` if possible."""
     parsed = re.sub("\"", "", arg)
 
     if is_int(parsed):
@@ -236,6 +218,17 @@ def parse_str(arg):
         return float(parsed)
     else:
         return arg
+
+
+def is_int(x):
+    """if `x` is int."""
+    try:
+        j = float(x)
+        h = int(j)
+    except (TypeError, ValueError):
+        return False
+    else:
+        return j == h
 
 
 if __name__ == "__main__":
