@@ -547,3 +547,63 @@ class Test_State(unittest.TestCase):
         """Test the create command with Review."""
         with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
             self.assertFalse(self.console.onecmd("create Review"))
+
+class TestCity(unittest.TestCase):
+    """Test cases for the City class."""
+    def setUp(self):
+        """Sets up the mock stdin and stdout."""
+        self.console = HBNBCommand()
+        self.mock_stdin = patch('sys.stdin', StringIO())
+        self.mock_stdout = patch('sys.stdout', StringIO())
+        self.mock_stdin.start()
+        self.mock_stdout.start()
+
+    def tearDown(self):
+        """Cleans up the mock stdin and stdout."""
+        self.mock_stdin.stop()
+        self.mock_stdout.stop()
+
+    def test_quit(self):
+        """Test the quit command."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertTrue(self.console.onecmd("quit"))
+    
+    def test_EOF(self):
+        """Test the EOF command."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertTrue(self.console.onecmd("EOF"))
+    
+    def test_create_base_model(self):
+        """Test the create command with BaseModel."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertFalse(self.console.onecmd("create BaseModel"))
+
+    def test_create_user(self):
+        """Test the create command with User."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertFalse(self.console.onecmd("create User"))
+    
+    def test_create_place(self):
+        """Test the create command with Place."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertFalse(self.console.onecmd("create Place"))
+    
+    def test_create_state(self):
+        """Test the create command with State."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertFalse(self.console.onecmd("create State"))
+    
+    def test_create_city(self):
+        """Test the create command with City."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertFalse(self.console.onecmd("create City"))
+    
+    def test_create_amenity(self):
+        """Test the create command with Amenity."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertFalse(self.console.onecmd("create Amenity"))
+    
+    def test_create_review(self):
+        """Test the create command with Review."""
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            self.assertFalse(self.console.onecmd("create Review"))
